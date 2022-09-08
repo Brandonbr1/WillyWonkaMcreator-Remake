@@ -8,10 +8,11 @@ import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
+import net.minecraft.item.Food;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.BlockState;
 
-import net.mcreator.willywonka.procedures.WillyWonkaChoclatePlayerFinishesUsingItemProcedure;
+import net.mcreator.willywonka.procedures.CandyApplePlayerFinishesUsingItemProcedure;
 import net.mcreator.willywonka.WillywonkaModElements;
 
 import java.util.stream.Stream;
@@ -20,12 +21,12 @@ import java.util.HashMap;
 import java.util.AbstractMap;
 
 @WillywonkaModElements.ModElement.Tag
-public class WillyWonkaChoclateItem extends WillywonkaModElements.ModElement {
-	@ObjectHolder("willywonka:willy_wonka_choclate")
+public class CandyAppleItem extends WillywonkaModElements.ModElement {
+	@ObjectHolder("willywonka:candy_apple")
 	public static final Item block = null;
 
-	public WillyWonkaChoclateItem(WillywonkaModElements instance) {
-		super(instance, 9);
+	public CandyAppleItem(WillywonkaModElements instance) {
+		super(instance, 25);
 	}
 
 	@Override
@@ -35,8 +36,9 @@ public class WillyWonkaChoclateItem extends WillywonkaModElements.ModElement {
 
 	public static class ItemCustom extends Item {
 		public ItemCustom() {
-			super(new Item.Properties().group(ItemGroup.MISC).maxStackSize(64).rarity(Rarity.COMMON));
-			setRegistryName("willy_wonka_choclate");
+			super(new Item.Properties().group(ItemGroup.MISC).maxStackSize(64).rarity(Rarity.COMMON)
+					.food((new Food.Builder()).hunger(6).saturation(7f).setAlwaysEdible().build()));
+			setRegistryName("candy_apple");
 		}
 
 		@Override
@@ -56,7 +58,7 @@ public class WillyWonkaChoclateItem extends WillywonkaModElements.ModElement {
 			double y = entity.getPosY();
 			double z = entity.getPosZ();
 
-			WillyWonkaChoclatePlayerFinishesUsingItemProcedure.executeProcedure(Stream.of(new AbstractMap.SimpleEntry<>("entity", entity))
+			CandyApplePlayerFinishesUsingItemProcedure.executeProcedure(Stream.of(new AbstractMap.SimpleEntry<>("entity", entity))
 					.collect(HashMap::new, (_m, _e) -> _m.put(_e.getKey(), _e.getValue()), Map::putAll));
 			return retval;
 		}
