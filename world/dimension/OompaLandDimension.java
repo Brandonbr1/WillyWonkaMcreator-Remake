@@ -85,10 +85,14 @@ public class OompaLandDimension extends WillywonkaModElements.ModElement {
 	@Override
 	public void init(FMLCommonSetupEvent event) {
 		Set<Block> replaceableBlocks = new HashSet<>();
-		replaceableBlocks.add(Blocks.AIR);
+		replaceableBlocks.add(Blocks.GRASS_BLOCK);
 		replaceableBlocks.add(ForgeRegistries.BIOMES.getValue(new ResourceLocation("badlands")).getGenerationSettings().getSurfaceBuilder().get()
 				.getConfig().getTop().getBlock());
 		replaceableBlocks.add(ForgeRegistries.BIOMES.getValue(new ResourceLocation("badlands")).getGenerationSettings().getSurfaceBuilder().get()
+				.getConfig().getUnder().getBlock());
+		replaceableBlocks.add(ForgeRegistries.BIOMES.getValue(new ResourceLocation("dark_forest")).getGenerationSettings().getSurfaceBuilder().get()
+				.getConfig().getTop().getBlock());
+		replaceableBlocks.add(ForgeRegistries.BIOMES.getValue(new ResourceLocation("dark_forest")).getGenerationSettings().getSurfaceBuilder().get()
 				.getConfig().getUnder().getBlock());
 		DeferredWorkQueue.runLater(() -> {
 			try {

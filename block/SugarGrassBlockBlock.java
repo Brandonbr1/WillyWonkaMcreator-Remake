@@ -3,6 +3,7 @@ package net.mcreator.willywonka.block;
 
 import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -20,6 +21,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.BlockItem;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
@@ -48,6 +51,12 @@ public class SugarGrassBlockBlock extends WillywonkaModElements.ModElement {
 				.add(() -> new BlockItem(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS)).setRegistryName(block.getRegistryName()));
 	}
 
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void clientLoad(FMLClientSetupEvent event) {
+		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
+	}
+
 	private static class BlockColorRegisterHandler {
 		@OnlyIn(Dist.CLIENT)
 		@SubscribeEvent
@@ -60,13 +69,19 @@ public class SugarGrassBlockBlock extends WillywonkaModElements.ModElement {
 
 	public static class CustomBlock extends Block {
 		public CustomBlock() {
-			super(Block.Properties.create(Material.TALL_PLANTS).sound(SoundType.GROUND).hardnessAndResistance(1f, 10f).setLightLevel(s -> 0));
+			super(Block.Properties.create(Material.TALL_PLANTS).sound(SoundType.GROUND).hardnessAndResistance(1f, 10f).setLightLevel(s -> 0)
+					.notSolid().setOpaque((bs, br, bp) -> false));
 			setRegistryName("sugar_grass_block");
 		}
 
 		@Override
+		public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+			return true;
+		}
+
+		@Override
 		public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
-			return 1;
+			return 0;
 		}
 
 		@Override

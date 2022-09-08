@@ -51,12 +51,12 @@ import java.util.List;
 import java.util.Collections;
 
 @WillywonkaModElements.ModElement.Tag
-public class CandyFlowerBlock extends WillywonkaModElements.ModElement {
-	@ObjectHolder("willywonka:candy_flower")
+public class SugarFlowerBlock extends WillywonkaModElements.ModElement {
+	@ObjectHolder("willywonka:sugar_flower")
 	public static final Block block = null;
 
-	public CandyFlowerBlock(WillywonkaModElements instance) {
-		super(instance, 31);
+	public SugarFlowerBlock(WillywonkaModElements instance) {
+		super(instance, 43);
 		MinecraftForge.EVENT_BUS.register(this);
 		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
 	}
@@ -101,20 +101,13 @@ public class CandyFlowerBlock extends WillywonkaModElements.ModElement {
 							(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(block.getDefaultState()), new SimpleBlockPlacer()))
 									.tries(64).build())
 					.withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).func_242731_b(5);
-			event.getRegistry().register(feature.setRegistryName("candy_flower"));
-			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("willywonka:candy_flower"), configuredFeature);
+			event.getRegistry().register(feature.setRegistryName("sugar_flower"));
+			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("willywonka:sugar_flower"), configuredFeature);
 		}
 	}
 
 	@SubscribeEvent
 	public void addFeatureToBiomes(BiomeLoadingEvent event) {
-		boolean biomeCriteria = false;
-		if (new ResourceLocation("willywonka:candy_biome").equals(event.getName()))
-			biomeCriteria = true;
-		if (new ResourceLocation("willywonka:choclate_biome").equals(event.getName()))
-			biomeCriteria = true;
-		if (!biomeCriteria)
-			return;
 		event.getGeneration().getFeatures(GenerationStage.Decoration.VEGETAL_DECORATION).add(() -> configuredFeature);
 	}
 
@@ -122,7 +115,7 @@ public class CandyFlowerBlock extends WillywonkaModElements.ModElement {
 		public BlockCustomFlower() {
 			super(Effects.SPEED, 100, Block.Properties.create(Material.PLANTS).doesNotBlockMovement().sound(SoundType.PLANT)
 					.hardnessAndResistance(0f, 0f).setLightLevel(s -> 0));
-			setRegistryName("candy_flower");
+			setRegistryName("sugar_flower");
 		}
 
 		@Override
