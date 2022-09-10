@@ -3,23 +3,21 @@ package net.mcreator.willywonka.item;
 
 import net.minecraftforge.registries.ObjectHolder;
 
-import net.minecraft.item.UseAction;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
-import net.minecraft.item.Food;
 import net.minecraft.block.BlockState;
 
 import net.mcreator.willywonka.WillywonkaModElements;
 
 @WillywonkaModElements.ModElement.Tag
-public class OompaLunchItem extends WillywonkaModElements.ModElement {
-	@ObjectHolder("willywonka:oompa_lunch")
+public class ChoclateSwordItem extends WillywonkaModElements.ModElement {
+	@ObjectHolder("willywonka:choclate_sword")
 	public static final Item block = null;
 
-	public OompaLunchItem(WillywonkaModElements instance) {
-		super(instance, 53);
+	public ChoclateSwordItem(WillywonkaModElements instance) {
+		super(instance, 62);
 	}
 
 	@Override
@@ -29,25 +27,12 @@ public class OompaLunchItem extends WillywonkaModElements.ModElement {
 
 	public static class ItemCustom extends Item {
 		public ItemCustom() {
-			super(new Item.Properties().group(ItemGroup.MISC).maxStackSize(64).rarity(Rarity.COMMON)
-					.food((new Food.Builder()).hunger(2).saturation(1f)
-
-							.build()));
-			setRegistryName("oompa_lunch");
-		}
-
-		@Override
-		public UseAction getUseAction(ItemStack itemstack) {
-			return UseAction.NONE;
+			super(new Item.Properties().group(ItemGroup.MISC).maxStackSize(64).rarity(Rarity.COMMON));
+			setRegistryName("choclate_sword");
 		}
 
 		@Override
 		public int getItemEnchantability() {
-			return 0;
-		}
-
-		@Override
-		public int getUseDuration(ItemStack itemstack) {
 			return 0;
 		}
 
