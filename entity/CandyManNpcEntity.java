@@ -11,18 +11,18 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.World;
-import net.minecraft.world.BossInfo;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.network.IPacket;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
@@ -31,25 +31,33 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.CreatureAttribute;
 
-import net.mcreator.willywonka.entity.renderer.WillyWonkaEnityRenderer;
+import net.mcreator.willywonka.procedures.CandyManNpcOnInitialEntitySpawnProcedure;
+import net.mcreator.willywonka.entity.renderer.CandyManNpcRenderer;
 import net.mcreator.willywonka.WillywonkaModElements;
 
+import javax.annotation.Nullable;
+
+import java.util.Collections;
+
 @WillywonkaModElements.ModElement.Tag
-public class WillyWonkaEnityEntity extends WillywonkaModElements.ModElement {
+public class CandyManNpcEntity extends WillywonkaModElements.ModElement {
 	public static EntityType entity = (EntityType.Builder.<CustomEntity>create(CustomEntity::new, EntityClassification.MONSTER)
 			.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(CustomEntity::new)
-			.size(0.6f, 1.8f)).build("willy_wonka_enity").setRegistryName("willy_wonka_enity");
+			.size(0.6f, 1.8f)).build("candy_man_npc").setRegistryName("candy_man_npc");
 
-	public WillyWonkaEnityEntity(WillywonkaModElements instance) {
-		super(instance, 45);
-		FMLJavaModLoadingContext.get().getModEventBus().register(new WillyWonkaEnityRenderer.ModelRegisterHandler());
+	public CandyManNpcEntity(WillywonkaModElements instance) {
+		super(instance, 55);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new CandyManNpcRenderer.ModelRegisterHandler());
 		FMLJavaModLoadingContext.get().getModEventBus().register(new EntityAttributesRegisterHandler());
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -57,8 +65,8 @@ public class WillyWonkaEnityEntity extends WillywonkaModElements.ModElement {
 	@Override
 	public void initElements() {
 		elements.entities.add(() -> entity);
-		elements.items.add(
-				() -> new SpawnEggItem(entity, -1, -1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("willy_wonka_enity_spawn_egg"));
+		elements.items
+				.add(() -> new SpawnEggItem(entity, -1, -1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("candy_man_npc_spawn_egg"));
 	}
 
 	@SubscribeEvent
@@ -77,12 +85,10 @@ public class WillyWonkaEnityEntity extends WillywonkaModElements.ModElement {
 		public void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
 			AttributeModifierMap.MutableAttribute ammma = MobEntity.func_233666_p_();
 			ammma = ammma.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3);
-			ammma = ammma.createMutableAttribute(Attributes.MAX_HEALTH, 150);
+			ammma = ammma.createMutableAttribute(Attributes.MAX_HEALTH, 10);
 			ammma = ammma.createMutableAttribute(Attributes.ARMOR, 0);
 			ammma = ammma.createMutableAttribute(Attributes.ATTACK_DAMAGE, 3);
-			ammma = ammma.createMutableAttribute(Attributes.FOLLOW_RANGE, 14);
-			ammma = ammma.createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 4);
-			ammma = ammma.createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 3);
+			ammma = ammma.createMutableAttribute(Attributes.FOLLOW_RANGE, 16);
 			event.put(entity, ammma.create());
 		}
 	}
@@ -134,28 +140,16 @@ public class WillyWonkaEnityEntity extends WillywonkaModElements.ModElement {
 		}
 
 		@Override
-		public boolean isNonBoss() {
-			return false;
-		}
+		public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason,
+				@Nullable ILivingEntityData livingdata, @Nullable CompoundNBT tag) {
+			ILivingEntityData retval = super.onInitialSpawn(world, difficulty, reason, livingdata, tag);
+			double x = this.getPosX();
+			double y = this.getPosY();
+			double z = this.getPosZ();
+			Entity entity = this;
 
-		private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(), BossInfo.Color.PINK, BossInfo.Overlay.PROGRESS);
-
-		@Override
-		public void addTrackingPlayer(ServerPlayerEntity player) {
-			super.addTrackingPlayer(player);
-			this.bossInfo.addPlayer(player);
-		}
-
-		@Override
-		public void removeTrackingPlayer(ServerPlayerEntity player) {
-			super.removeTrackingPlayer(player);
-			this.bossInfo.removePlayer(player);
-		}
-
-		@Override
-		public void updateAITasks() {
-			super.updateAITasks();
-			this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+			CandyManNpcOnInitialEntitySpawnProcedure.executeProcedure(Collections.emptyMap());
+			return retval;
 		}
 	}
 }

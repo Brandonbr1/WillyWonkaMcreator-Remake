@@ -38,7 +38,7 @@ public class HardenedChoclateBlock extends WillywonkaModElements.ModElement {
 
 	public static class CustomBlock extends Block {
 		public CustomBlock() {
-			super(Block.Properties.create(Material.ROCK).sound(SoundType.GROUND).hardnessAndResistance(1f, 10f).setLightLevel(s -> 0));
+			super(Block.Properties.create(Material.ROCK).sound(SoundType.GROUND).hardnessAndResistance(8f, 6f).setLightLevel(s -> 0));
 			setRegistryName("hardened_choclate");
 		}
 
