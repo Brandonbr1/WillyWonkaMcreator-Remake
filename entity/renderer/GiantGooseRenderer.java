@@ -25,7 +25,7 @@ public class GiantGooseRenderer {
 
 						@Override
 						public ResourceLocation getEntityTexture(Entity entity) {
-							return new ResourceLocation("willywonka:textures/entities/willywonkanice.png");
+							return new ResourceLocation("willywonka:textures/entities/chicken.png");
 						}
 					});
 		}
