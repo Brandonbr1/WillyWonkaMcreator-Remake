@@ -47,7 +47,10 @@ import net.mcreator.willywonka.WillywonkaModElements;
 
 import javax.annotation.Nullable;
 
-import java.util.Collections;
+import java.util.stream.Stream;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.AbstractMap;
 
 @WillywonkaModElements.ModElement.Tag
 public class CandyManNpcEntity extends WillywonkaModElements.ModElement {
@@ -148,7 +151,9 @@ public class CandyManNpcEntity extends WillywonkaModElements.ModElement {
 			double z = this.getPosZ();
 			Entity entity = this;
 
-			CandyManNpcOnInitialEntitySpawnProcedure.executeProcedure(Collections.emptyMap());
+			CandyManNpcOnInitialEntitySpawnProcedure
+					.executeProcedure(Stream.of(new AbstractMap.SimpleEntry<>("world", world), new AbstractMap.SimpleEntry<>("entity", entity))
+							.collect(HashMap::new, (_m, _e) -> _m.put(_e.getKey(), _e.getValue()), Map::putAll));
 			return retval;
 		}
 	}
