@@ -6,10 +6,10 @@ import net.minecraftforge.registries.ObjectHolder;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.IItemTier;
 
+import net.mcreator.willywonka.itemgroup.WillyWonkaItemGroup;
 import net.mcreator.willywonka.WillywonkaModElements;
 
 @WillywonkaModElements.ModElement.Tag
@@ -47,7 +47,7 @@ public class GummyBearPickaxeItem extends WillywonkaModElements.ModElement {
 			public Ingredient getRepairMaterial() {
 				return Ingredient.EMPTY;
 			}
-		}, 1, 4f, new Item.Properties().group(ItemGroup.TOOLS)) {
+		}, 1, 4f, new Item.Properties().group(WillyWonkaItemGroup.tab)) {
 			@Override
 			public boolean hasContainerItem() {
 				return true;

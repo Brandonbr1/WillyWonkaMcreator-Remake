@@ -2,6 +2,9 @@
 package net.mcreator.willywonka.block;
 
 import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import net.minecraft.world.IBlockReader;
 import net.minecraft.util.math.BlockPos;
@@ -9,6 +12,8 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.BlockItem;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
@@ -21,12 +26,12 @@ import java.util.List;
 import java.util.Collections;
 
 @WillywonkaModElements.ModElement.Tag
-public class HoneyMellonBlock extends WillywonkaModElements.ModElement {
-	@ObjectHolder("willywonka:honey_mellon")
+public class GoldenEggBlock extends WillywonkaModElements.ModElement {
+	@ObjectHolder("willywonka:golden_egg")
 	public static final Block block = null;
 
-	public HoneyMellonBlock(WillywonkaModElements instance) {
-		super(instance, 39);
+	public GoldenEggBlock(WillywonkaModElements instance) {
+		super(instance, 70);
 	}
 
 	@Override
@@ -35,15 +40,27 @@ public class HoneyMellonBlock extends WillywonkaModElements.ModElement {
 		elements.items.add(() -> new BlockItem(block, new Item.Properties().group(WillyWonkaItemGroup.tab)).setRegistryName(block.getRegistryName()));
 	}
 
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void clientLoad(FMLClientSetupEvent event) {
+		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
+	}
+
 	public static class CustomBlock extends Block {
 		public CustomBlock() {
-			super(Block.Properties.create(Material.ROCK).sound(SoundType.GROUND).hardnessAndResistance(1f, 10f).setLightLevel(s -> 0));
-			setRegistryName("honey_mellon");
+			super(Block.Properties.create(Material.ROCK).sound(SoundType.GROUND).hardnessAndResistance(30f, 10f).setLightLevel(s -> 0).notSolid()
+					.setOpaque((bs, br, bp) -> false));
+			setRegistryName("golden_egg");
+		}
+
+		@Override
+		public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+			return true;
 		}
 
 		@Override
 		public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
-			return 15;
+			return 0;
 		}
 
 		@Override

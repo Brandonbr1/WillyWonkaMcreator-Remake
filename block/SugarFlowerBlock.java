@@ -33,7 +33,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.potion.Effects;
 import net.minecraft.loot.LootContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.BlockItem;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -44,6 +43,7 @@ import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
 
+import net.mcreator.willywonka.itemgroup.WillyWonkaItemGroup;
 import net.mcreator.willywonka.WillywonkaModElements;
 
 import java.util.Random;
@@ -64,7 +64,7 @@ public class SugarFlowerBlock extends WillywonkaModElements.ModElement {
 	@Override
 	public void initElements() {
 		elements.blocks.add(() -> new BlockCustomFlower());
-		elements.items.add(() -> new BlockItem(block, new Item.Properties().group(ItemGroup.DECORATIONS)).setRegistryName(block.getRegistryName()));
+		elements.items.add(() -> new BlockItem(block, new Item.Properties().group(WillyWonkaItemGroup.tab)).setRegistryName(block.getRegistryName()));
 	}
 
 	@Override

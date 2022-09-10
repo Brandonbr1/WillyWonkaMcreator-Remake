@@ -4,49 +4,50 @@ package net.mcreator.willywonka.item;
 import net.minecraftforge.registries.ObjectHolder;
 
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.IItemTier;
-import net.minecraft.item.AxeItem;
 
-import net.mcreator.willywonka.itemgroup.WillyWonkaItemGroup;
 import net.mcreator.willywonka.WillywonkaModElements;
 
 @WillywonkaModElements.ModElement.Tag
-public class GummyBearAxeItem extends WillywonkaModElements.ModElement {
-	@ObjectHolder("willywonka:gummy_bear_axe")
+public class JawBreakerPickaxeItem extends WillywonkaModElements.ModElement {
+	@ObjectHolder("willywonka:jaw_breaker_pickaxe")
 	public static final Item block = null;
 
-	public GummyBearAxeItem(WillywonkaModElements instance) {
-		super(instance, 29);
+	public JawBreakerPickaxeItem(WillywonkaModElements instance) {
+		super(instance, 72);
 	}
 
 	@Override
 	public void initElements() {
-		elements.items.add(() -> new AxeItem(new IItemTier() {
+		elements.items.add(() -> new PickaxeItem(new IItemTier() {
 			public int getMaxUses() {
-				return 1000;
+				return 6000;
 			}
 
 			public float getEfficiency() {
-				return 4f;
+				return 80f;
 			}
 
 			public float getAttackDamage() {
-				return 10f;
+				return 2f;
 			}
 
 			public int getHarvestLevel() {
-				return 1;
+				return 8;
 			}
 
 			public int getEnchantability() {
-				return 2;
+				return 50;
 			}
 
 			public Ingredient getRepairMaterial() {
-				return Ingredient.EMPTY;
+				return Ingredient.fromStacks(new ItemStack(JawBreakerItem.block));
 			}
-		}, 1, -3f, new Item.Properties().group(WillyWonkaItemGroup.tab)) {
-		}.setRegistryName("gummy_bear_axe"));
+		}, 1, -3f, new Item.Properties().group(ItemGroup.TOOLS)) {
+		}.setRegistryName("jaw_breaker_pickaxe"));
 	}
 }

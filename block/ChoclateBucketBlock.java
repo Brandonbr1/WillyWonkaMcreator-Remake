@@ -14,7 +14,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.Items;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.BucketItem;
 import net.minecraft.fluid.Fluid;
@@ -25,6 +24,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.Block;
 
+import net.mcreator.willywonka.itemgroup.WillyWonkaItemGroup;
 import net.mcreator.willywonka.WillywonkaModElements;
 
 @WillywonkaModElements.ModElement.Tag
@@ -74,7 +74,7 @@ public class ChoclateBucketBlock extends WillywonkaModElements.ModElement {
 				.add(() -> new FlowingFluidBlock(still, Block.Properties.create(Material.WATER).hardnessAndResistance(100f).setLightLevel(s -> 0)) {
 				}.setRegistryName("choclate_bucket"));
 		elements.items.add(() -> new BucketItem(still,
-				new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(ItemGroup.MISC).rarity(Rarity.COMMON))
+				new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(WillyWonkaItemGroup.tab).rarity(Rarity.COMMON))
 				.setRegistryName("choclate_bucket_bucket"));
 	}
 }
